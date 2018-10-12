@@ -16,6 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+.PHONY: libdropbox_fs_fix.so
 libdropbox_fs_fix.so:
 	gcc -shared -fPIC -ldl -o libdropbox_fs_fix.so dropbox_fs_fix.c
 

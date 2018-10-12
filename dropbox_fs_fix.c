@@ -18,26 +18,82 @@
 
 #define _GNU_SOURCE
 
+#include <dlfcn.h>
+#include <fcntl.h>
+#include <libgen.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/vfs.h>
+#include <string.h>
 #include <linux/magic.h>
-#include <dlfcn.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/vfs.h>
 
-int (*orig_statfs)(const char *path, struct statfs64 *buf) = NULL;
+#define CANARY_FILE_PREFIX "/tmp"
+char *canary_path = NULL;
+
+int (*orig_statfs64)(const char *path, struct statfs64 *buf) = NULL;
 
 int statfs64(const char *path, struct statfs64 *buf) {
-  if (orig_statfs == NULL) {
-    orig_statfs = dlsym(RTLD_NEXT, "statfs64");
-    if (orig_statfs == NULL) {
+  if (orig_statfs64 == NULL) {
+    orig_statfs64 = dlsym(RTLD_NEXT, "statfs64");
+    if (orig_statfs64 == NULL) {
       fprintf(stderr, "dlsym failed: %s\n", dlerror());
       return -1;
     }
   }
 
-  int retval = orig_statfs(path, buf);
+  int retval = orig_statfs64(path, buf);
   if (retval == 0) {
     buf->f_type = EXT4_SUPER_MAGIC;
+
+    // Assume this is the Dropbox root, learn the canary path prefix.
+    if (canary_path == NULL) {
+      char *dup = strdup(path);
+      char *dname = dirname(dup);
+
+      canary_path = malloc(strlen(dname) + strlen(CANARY_FILE_PREFIX) + 1);
+      strncpy(canary_path, dname, strlen(dname));
+      strncat(canary_path, CANARY_FILE_PREFIX, strlen(CANARY_FILE_PREFIX));
+
+      free(dup);
+      //fprintf(stderr, "  LEARNED canary path: %s\n", canary_path);
+    }
   }
   return retval;
+}
+
+# define OPEN_NEEDS_MODE(flags) \
+  (((flags) & O_CREAT) != 0 || ((flags) & O_TMPFILE) == O_TMPFILE)
+
+int (*orig_open64)(const char *pathname, int flags, ...)= NULL;
+
+int open64(const char *pathname, int flags, ...) {
+  if (orig_open64 == NULL) {
+    orig_open64 = dlsym(RTLD_NEXT, "open64");
+    if (orig_open64 == NULL) {
+      fprintf(stderr, "dlsym failed: %s\n", dlerror());
+      return -1;
+    }
+  }
+
+  // Reject opens of canary files.
+  if (canary_path && strncmp(pathname, canary_path, strlen(canary_path)) == 0) {
+    //fprintf(stderr, "  REJECT canary path: %s\n", pathname);
+    return -1;
+  }
+
+  // Passthru - select target function arity depending on flags. Code
+  // borrowed from fcntl.h.
+  if (OPEN_NEEDS_MODE(flags)) {
+    va_list arg;
+    va_start (arg, flags);
+    int mode = va_arg (arg, int);
+    va_end (arg);
+
+    return orig_open64(pathname, flags, mode);
+  }
+
+  return orig_open64(pathname, flags);
 }
