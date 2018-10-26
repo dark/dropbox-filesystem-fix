@@ -17,8 +17,8 @@
 #
 
 CC = gcc
-CFLAGS = -fPIC -ldl
-LDFLAGS = -shared
+CFLAGS = -shared -fPIC
+LDFLAGS = -ldl
 
 .PHONY: all
 all: libdropbox_fs_fix.so
@@ -26,8 +26,15 @@ all: libdropbox_fs_fix.so
 debug: CFLAGS += -DDEBUG -g
 debug: all
 
+test: debug detect-ext4.o
+	LD_PRELOAD=./libdropbox_fs_fix.so ./detect-ext4.o
+	@if test ! detect-ext4.o; then echo "Test is unreliable: we're actually on ext4"; fi
+
 %.so: %.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
+%.o: %.c
+	$(CC) -o $@ $<
+
 clean:
-	rm -vf *.so
+	rm -vf libdropbox_fs_fix.so detect-ext4
