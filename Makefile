@@ -16,9 +16,18 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-.PHONY: libdropbox_fs_fix.so
-libdropbox_fs_fix.so:
-	gcc -shared -fPIC -ldl -o libdropbox_fs_fix.so dropbox_fs_fix.c
+CC = gcc
+CFLAGS = -fPIC -ldl
+LDFLAGS = -shared
+
+.PHONY: all
+all: libdropbox_fs_fix.so
+
+debug: CFLAGS += -DDEBUG -g
+debug: all
+
+%.so: %.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
-	rm -f libdropbox_fs_fix.so
+	rm -vf *.so
