@@ -58,7 +58,9 @@ int statfs64(const char *path, struct statfs64 *buf) {
       strncat(canary_path, CANARY_FILE_PREFIX, strlen(CANARY_FILE_PREFIX));
 
       free(dup);
-      //fprintf(stderr, "  LEARNED canary path: %s\n", canary_path);
+      #ifdef DEBUG
+      fprintf(stderr, "  LEARNED canary path: %s\n", canary_path);
+      #endif
     }
   }
   return retval;
@@ -80,7 +82,9 @@ int open64(const char *pathname, int flags, ...) {
 
   // Reject opens of canary files.
   if (canary_path && strncmp(pathname, canary_path, strlen(canary_path)) == 0) {
-    //fprintf(stderr, "  REJECT canary path: %s\n", pathname);
+    #ifdef DEBUG
+    fprintf(stderr, "  REJECT canary path: %s\n", pathname);
+    #endif
     return -1;
   }
 

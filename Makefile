@@ -16,9 +16,25 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-.PHONY: libdropbox_fs_fix.so
-libdropbox_fs_fix.so:
-	gcc -shared -fPIC -ldl -o libdropbox_fs_fix.so dropbox_fs_fix.c
+CC = gcc
+CFLAGS = -shared -fPIC
+LDFLAGS = -ldl
+
+.PHONY: all
+all: libdropbox_fs_fix.so
+
+debug: CFLAGS += -DDEBUG -g
+debug: all
+
+test: debug detect-ext4.o
+	LD_PRELOAD=./libdropbox_fs_fix.so ./detect-ext4.o
+	@if test ! detect-ext4.o; then echo "Test is unreliable: we're actually on ext4"; fi
+
+%.so: %.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
+
+%.o: %.c
+	$(CC) -o $@ $<
 
 clean:
-	rm -f libdropbox_fs_fix.so
+	rm -vf libdropbox_fs_fix.so detect-ext4
