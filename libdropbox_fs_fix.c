@@ -33,6 +33,9 @@
 #define CANARY_FILE_PREFIX "/tmp"
 char *canary_path = NULL;
 
+#define PROC_FILESYSTEMS "/proc/filesystems"
+
+
 int (*orig_statfs64)(const char *path, struct statfs64 *buf) = NULL;
 
 int statfs64(const char *path, struct statfs64 *buf) {
@@ -84,6 +87,14 @@ int open64(const char *pathname, int flags, ...) {
   if (canary_path && strncmp(pathname, canary_path, strlen(canary_path)) == 0) {
 #ifdef DEBUG
     fprintf(stderr, "  REJECT canary path: %s\n", pathname);
+#endif
+    return -1;
+  }
+
+  // Reject opens of filesystem pseudofile.
+  if (strncmp(pathname, PROC_FILESYSTEMS, strlen(PROC_FILESYSTEMS)) == 0) {
+#ifdef DEBUG
+    fprintf(stderr, "  REJECT read pseudofile: %s\n", pathname);
 #endif
     return -1;
   }
