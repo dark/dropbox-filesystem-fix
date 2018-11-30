@@ -56,15 +56,16 @@ int statfs64(const char *path, struct statfs64 *buf) {
       char *dup = strdup(path);
       char *dname = dirname(dup);
 
-      if (canary_path = malloc(strlen(dname) + strlen(CANARY_FILE_PREFIX) + 1)) {
+      canary_path = malloc(strlen(dname) + strlen(CANARY_FILE_PREFIX) + 1);
+      if (canary_path) {
         strcpy(canary_path, dname);
         strcat(canary_path, CANARY_FILE_PREFIX);
+#ifdef DEBUG
+        fprintf(stderr, "  LEARNED canary path: %s\n", canary_path);
+#endif
       }
 
       free(dup);
-#ifdef DEBUG
-      fprintf(stderr, "  LEARNED canary path: %s\n", canary_path);
-#endif
     }
   }
   return retval;

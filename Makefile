@@ -17,7 +17,7 @@
 #
 
 CC = gcc
-CFLAGS = -shared -fPIC
+CFLAGS = -shared -fPIC -Wall
 LDFLAGS = -ldl
 
 .PHONY: all
