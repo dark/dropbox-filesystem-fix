@@ -56,9 +56,10 @@ int statfs64(const char *path, struct statfs64 *buf) {
       char *dup = strdup(path);
       char *dname = dirname(dup);
 
-      canary_path = malloc(strlen(dname) + strlen(CANARY_FILE_PREFIX) + 1);
-      strncpy(canary_path, dname, strlen(dname));
-      strncat(canary_path, CANARY_FILE_PREFIX, strlen(CANARY_FILE_PREFIX));
+      if (canary_path = malloc(strlen(dname) + strlen(CANARY_FILE_PREFIX) + 1)) {
+        strcpy(canary_path, dname);
+        strcat(canary_path, CANARY_FILE_PREFIX);
+      }
 
       free(dup);
 #ifdef DEBUG
