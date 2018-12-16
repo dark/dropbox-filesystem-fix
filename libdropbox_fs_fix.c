@@ -30,6 +30,12 @@
 #include <sys/types.h>
 #include <sys/vfs.h>
 
+#ifndef O_TMPFILE
+#define __O_TMPFILE 020000000
+#define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
+#define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)
+#endif
+
 #define CANARY_FILE_PREFIX "/tmp"
 char *canary_path = NULL;
 
