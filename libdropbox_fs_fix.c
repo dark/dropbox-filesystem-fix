@@ -30,6 +30,7 @@
 #include <sys/types.h>
 #include <sys/vfs.h>
 
+// Necessary on older glibc (?). Borrowed from asm-generic/fcntl.h.
 #ifndef O_TMPFILE
 #define __O_TMPFILE 020000000
 #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
