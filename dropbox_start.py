@@ -27,6 +27,13 @@ import subprocess
 import sys
 import time
 
+# Python 3 compatibility on xrange
+# Ref: https://stackoverflow.com/a/31136897/1259696
+try:
+    xrange
+except NameError:
+    xrange = range
+
 
 def is_dropbox_running():
     pidfile = os.path.expanduser("~/.dropbox/dropbox.pid")
