@@ -9,12 +9,14 @@ The initial version of this repo was based on code posted by one user of the for
 
 ## Installation
 
-**This is an experimental fix, not supported by Dropbox. It might cause data loss.**
+**This is an experimental fix, not supported by Dropbox. This fix unpredictably changes the behavior of the Dropbox client and might cause irreparable data loss.**
 
-You assume your own responsibility to configure, build and use this code. If you do not feel comfortable with researching and running those steps yourself, or dealing with any problem you might encounter, please do not use this fix.
+The installation steps are not documented on purpose, given the experimental nature of this code. You assume your own responsibility to configure, build and use this code.
 
+- If you do not feel comfortable with researching and running those steps yourself, or dealing with any problem you might encounter, please do not use this fix. 
 
+- If you are not comfortable with understanding how this code works and is built, this fix is probably too advanced for you. (The author wants to avoid the "implicit warranty" that a copy-and-paste set of instructions would imply.)
 
 ## Pages linking here
 
-* https://www.linuxuprising.com/2018/11/how-to-use-dropbox-on-non-ext4.html (contains a detailed set of instructions to install this code on `.deb`-based Linux distributions)
+* For thouse users that accept the risk of data loss, there's [a detailed set of instructions](https://www.linuxuprising.com/2018/11/how-to-use-dropbox-on-non-ext4.html) to install this code on `.deb`-based Linux distributions, that come with no warranties watsoever. Please use on your own risk.
