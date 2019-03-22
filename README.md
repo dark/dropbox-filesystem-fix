@@ -18,3 +18,5 @@ You assume your own responsibility to configure, build and use this code. If you
 ## Pages linking here
 
 * https://www.linuxuprising.com/2018/11/how-to-use-dropbox-on-non-ext4.html (contains a detailed set of instructions to install this code on `.deb`-based Linux distributions)
+
+* https://www.maketecheasier.com/use-dropbox-non-ext4-linux-filesystem/ (contains a few extra tips to install dependencies in `.rpm`-based distributions)
