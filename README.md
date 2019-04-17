@@ -19,6 +19,6 @@ You assume your own responsibility to configure, build and use this code. If you
 
 * https://www.linuxuprising.com/2018/11/how-to-use-dropbox-on-non-ext4.html (contains a detailed set of instructions to install this code on `.deb`-based Linux distributions)
 
-* https://www.maketecheasier.com/use-dropbox-non-ext4-linux-filesystem/ (contains a few extra tips to install dependencies in `.rpm`-based distributions)
+* https://www.maketecheasier.com/use-dropbox-non-ext4-linux-filesystem/ (contains a few extra tips to install dependencies in `.rpm`-based Linux distributions)
 
 * https://aur.archlinux.org/packages/dropbox-fix2 (a user-contributed package for Arch Linux in the AUR)
