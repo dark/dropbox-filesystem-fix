@@ -4,7 +4,7 @@ Dropbox confirmed recently ([link](https://www.dropboxforum.com/t5/Syncing-and-u
 
 **This project fixes the filesystem detection in the Linux client to restore the sync capability.**
 
-The fix has been tested against version `x86_64-70.4.93` of the Dropbox Linux Client.
+The fix has been tested against version `x86_64-79.4.143` of the Dropbox Linux Client.
 
 
 ## History
