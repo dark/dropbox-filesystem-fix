@@ -6,7 +6,16 @@ In July 2019, the decision was partially rolled back, allowing syncing from zfs 
 
 **This project fixes the filesystem detection in the Linux client to restore the sync capability for all Linux filesystems.**
 
-The fix has been tested against version `x86_64-89.4.278` of the Dropbox Linux Client.
+The fix has been tested against the official Dropbox Linux client up to, and including, version `x86_64-89.4.278`.
+
+
+## Maintenance mode
+
+**Please note**: I have stopped using the official Dropbox Linux client, so this project is in **maintenance mode**, and it will not receive any more patches from me. **I may not be able to help you debug new breakages, nor test any changes.**
+
+If you think something is broken and you have a fix, please open a pull request with an explanation, and if it looks reasonable I will merge it. If you have a question, feel free to open an issue; either I or somebody else watching the repo might be able to help, but no promises.
+
+If you are curious, I started using the open-source client at https://github.com/SamSchott/maestral-dropbox instead, that is a better alternative for me, as it does not require this fix and it's more command-line friendly. You should give it a try. :slightly_smiling_face:
 
 
 ## History
